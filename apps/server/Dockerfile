@@ -9,7 +9,7 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Install pnpm.
-RUN bun install -g pnpm
+RUN apk add --no-cache nodejs && npm install -g pnpm
 
 # Install all dependencies.
 RUN pnpm install --frozen-lockfile
