@@ -34,7 +34,10 @@ COPY --from=builder /app/apps/server/dist ./dist
 COPY --from=builder /app/apps/server/package.json ./package.json
 
 # Install pnpm
-RUN npm install -g pnpm
+RUN apt-get update && apt-get install -y curl &&\
+apt-get clean && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - &&\
+apt-get update && apt-get install -y nodejs && npm install -g npm@latest &&\
+npm install -g pnpm
 
 # Install production dependencies for the server.
 RUN pnpm install --prod
