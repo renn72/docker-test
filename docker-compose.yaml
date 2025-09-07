@@ -6,7 +6,7 @@ build:
 context: .
 # NOTE: This path assumes your Dockerfile is in packages/server/Dockerfile.
 # If it's in a different location, please adjust this path.
-dockerfile: app/apps/server/Dockerfile
+dockerfile: /apps/server/Dockerfile
 environment:
 # These environment variables are specific to your application and deployment.
 # It's recommended to set these values in Coolify's environment variables section.
@@ -28,7 +28,7 @@ build:
 context: .
 # NOTE: This path assumes your Dockerfile is in packages/web/Dockerfile.
 # If it's in a different location, please adjust this path.
-dockerfile: app/apps/web/Dockerfile
+dockerfile: /apps/web/Dockerfile
 environment:
 # This variable tells the frontend where to find the backend API.
 # It should be set in Coolify to your backend's public URL.
