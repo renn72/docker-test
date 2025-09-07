@@ -12,7 +12,7 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN apt-get update && apt-get install -y nodejs npm
 
 # Install pnpm.
-npm install -g pnpm
+RUN npm install -g pnpm
 
 # Install all dependencies.
 RUN pnpm install --frozen-lockfile
