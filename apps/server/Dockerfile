@@ -9,11 +9,10 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Install Curl
-RUN apt-get update && apt-get install -y curl && apt-get clean
-RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && RUN apt-get update && apt-get install -y nodejs
-RUN npm install -g npm@latest
-RUN npm install -g pnpm
-RUN pnpm install --frozen-lockfile
+RUN apt-get update && apt-get install -y curl &&\
+apt-get clean && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - &&\
+apt-get update && apt-get install -y nodejs && npm install -g npm@latest &&\
+npm install -g pnpm && pnpm install --frozen-lockfile
 
 
 # Copy the entire monorepo source.
