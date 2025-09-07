@@ -9,20 +9,12 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Install Curl
-RUN apt-get update && apt-get install -y curl
-
-# Use NodeSource to get the latest Node.js version
+RUN apt-get update && apt-get install -y curl && apt-get clean
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && RUN apt-get update && apt-get install -y nodejs
-
-# Update npm to the latest version
 RUN npm install -g npm@latest
-
-
-# Install pnpm.
 RUN npm install -g pnpm
-
-# Install all dependencies.
 RUN pnpm install --frozen-lockfile
+
 
 # Copy the entire monorepo source.
 COPY . .
