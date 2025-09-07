@@ -8,15 +8,14 @@ WORKDIR /app
 # Copy package management files to leverage Docker's cache.
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
+# Copy the entire monorepo source.
+COPY . .
+
 # Install Curl
 RUN apt-get update && apt-get install -y curl &&\
 apt-get clean && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - &&\
 apt-get update && apt-get install -y nodejs && npm install -g npm@latest &&\
 npm install -g pnpm && pnpm install --frozen-lockfile
-
-
-# Copy the entire monorepo source.
-COPY . .
 
 # Build the server application using Turborepo.
 RUN bunx turbo run build --filter=server
