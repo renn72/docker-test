@@ -6,7 +6,7 @@ build:
 context: .
 # NOTE: This path assumes your Dockerfile is in packages/server/Dockerfile.
 # If it's in a different location, please adjust this path.
-dockerfile: apps/server/Dockerfile
+dockerfile: app/apps/server/Dockerfile
 environment:
 # These environment variables are specific to your application and deployment.
 # It's recommended to set these values in Coolify's environment variables section.
@@ -17,7 +17,7 @@ environment:
 volumes:
 # This maps a local directory to the container's /app/db directory
 # to ensure your SQLite database persists across container restarts.
-- ./db-data:/apps/server/db
+- ./db-data:/app/apps/server/db
 ports:
 # Map the backend port.
 - "3001:3001"
@@ -28,7 +28,7 @@ build:
 context: .
 # NOTE: This path assumes your Dockerfile is in packages/web/Dockerfile.
 # If it's in a different location, please adjust this path.
-dockerfile: apps/web/Dockerfile
+dockerfile: app/apps/web/Dockerfile
 environment:
 # This variable tells the frontend where to find the backend API.
 # It should be set in Coolify to your backend's public URL.
