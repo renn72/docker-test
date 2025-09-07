@@ -1,29 +1,42 @@
 version: '3.8'
 
 services:
-frontend:
-# Use the Dockerfile located in the apps/web directory.
-build:
-context: .
-dockerfile: ./apps/web/Dockerfile
-# Map container port 3000 to host port 3000.
-ports:
-- "3000:3000"
-# Restart the container if it stops for any reason.
-restart: always
-
 backend:
-# Use the Dockerfile located in the apps/server directory.
 build:
 context: .
-dockerfile: ./apps/server/Dockerfile
-# Map container port 3001 to host port 3001.
-ports:
-- "3001:3001"
-# Restart the container if it stops for any reason.
-restart: always
-# Add a volume to persist the SQLite database.
+# NOTE: This path assumes your Dockerfile is in packages/server/Dockerfile.
+# If it's in a different location, please adjust this path.
+dockerfile: apps/server/Dockerfile
+environment:
+# These environment variables are specific to your application and deployment.
+# It's recommended to set these values in Coolify's environment variables section.
+- CORS_ORIGIN=http://localhost:3000
+- SECRET={BETTER_AUTH_SECRET}
+- BETTER_AUTH_URL=${BETTER_AUTH_URL}
+- DATABASE_URL=file:./db/local.db
 volumes:
-# This maps a local directory named 'db-data' to the container's /apps/server/db directory.
-# Create this directory on your VPS before running docker-compose up.
-- ./db-data:/app/db
+# This maps a local directory to the container's /app/db directory
+# to ensure your SQLite database persists across container restarts.
+- ./db-data:/apps/server/db
+ports:
+# Map the backend port.
+- "3001:3001"
+restart: unless-stopped
+
+frontend:
+build:
+context: .
+# NOTE: This path assumes your Dockerfile is in packages/web/Dockerfile.
+# If it's in a different location, please adjust this path.
+dockerfile: apps/web/Dockerfile
+environment:
+# This variable tells the frontend where to find the backend API.
+# It should be set in Coolify to your backend's public URL.
+- VITE_SERVER_URL=${VITE_SERVER_URL}
+ports:
+# Map the frontend port.
+- "3000:3000"
+depends_on:
+# This ensures the backend service is started before the frontend.
+- backend
+restart: unless-stopped
