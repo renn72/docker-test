@@ -50,4 +50,4 @@ RUN pnpm install --prod
 EXPOSE 3001
 
 # Set the command to run the Hono server.
-CMD
+CMD ["bun", "run", "dist/index.js"]
