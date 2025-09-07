@@ -8,6 +8,9 @@ WORKDIR /app
 # Copy package management files to leverage Docker's cache.
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
+# Install pnpm.
+RUN bun install -g pnpm
+
 # Install all dependencies.
 RUN pnpm install --frozen-lockfile
 
