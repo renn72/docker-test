@@ -44,7 +44,7 @@ RUN pnpm install --prod
 
 # Create the directory for the SQLite database.
 # This ensures the directory exists before the volume is mounted.
-# RUN mkdir -p /app/db
+RUN mkdir -p /app/db
 
 # Expose the server's port.
 EXPOSE 3001
