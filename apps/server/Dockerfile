@@ -33,6 +33,9 @@ COPY --from=builder /app/apps/server/dist ./dist
 # Copy the server's package.json to install only production dependencies.
 COPY --from=builder /app/apps/server/package.json ./package.json
 
+# Install pnpm
+RUN npm install -g pnpm
+
 # Install production dependencies for the server.
 RUN pnpm install --prod
 
