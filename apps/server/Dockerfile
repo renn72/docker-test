@@ -8,6 +8,9 @@ WORKDIR /app
 # Copy package management files to leverage Docker's cache.
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
+# Install Curl
+RUN apt-get update && apt-get install -y curl
+
 # Use NodeSource to get the latest Node.js version
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && RUN apt-get update && apt-get install -y nodejs
 
