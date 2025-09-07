@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+frontend:
+# Use the Dockerfile located in the apps/web directory.
+build:
+context: .
+dockerfile: ./apps/web/Dockerfile
+# Map container port 3000 to host port 3000.
+ports:
+- "3000:3000"
+# Restart the container if it stops for any reason.
+restart: always
+
+backend:
+# Use the Dockerfile located in the apps/server directory.
+build:
+context: .
+dockerfile: ./apps/server/Dockerfile
+# Map container port 3001 to host port 3001.
+ports:
+- "3001:3001"
+# Restart the container if it stops for any reason.
+restart: always
+# Add a volume to persist the SQLite database.
+volumes:
+# This maps a local directory named 'db-data' to the container's /apps/server/db directory.
+# Create this directory on your VPS before running docker-compose up.
+- ./db-data:/app/db
