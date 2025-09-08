@@ -6,13 +6,13 @@ services:
       context: .
       dockerfile: apps/server/Dockerfile
     environment:
-      - CORS_ORIGIN=http://localhost:3000
-      - SECRET={BETTER_AUTH_SECRET}
+      - CORS_ORIGIN=${VITE_SERVER_URL}
+      - SECRET=${BETTER_AUTH_SECRET}
       - BETTER_AUTH_URL=${BETTER_AUTH_URL}
-      - DATABASE_URL=file:./db/local.db
+      - DATABASE_URL=file:${DATABASE_URL}
 
     volumes:
-      - ~/db-data:/app/db
+      - ./../../../root/db-data:/app/db
 
     ports:
       - "3001:3001"
