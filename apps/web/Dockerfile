@@ -2,6 +2,11 @@
 # We use a bun base image for the build process.
 FROM oven/bun:1.1.18-slim AS builder
 
+# Accept the VITE_SERVER_URL build argument
+ARG VITE_SERVER_URL
+# Set it as an environment variable for the build
+ENV VITE_SERVER_URL=${VITE_SERVER_URL}
+
 # Set the working directory.
 WORKDIR /app
 
