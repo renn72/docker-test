@@ -1,4 +1,3 @@
-"dotenv/config";
 import { QueryCache, QueryClient } from "@tanstack/react-query";
 import { createTRPCClient, httpBatchLink } from "@trpc/client";
 import { createTRPCOptionsProxy } from "@trpc/tanstack-react-query";
@@ -20,12 +19,12 @@ export const queryClient = new QueryClient({
 	}),
 });
 
-console.log(process.env.VITE_SERVER_URL);
+console.log(import.meta.env.VITE_SERVER_URL);
 
 export const trpcClient = createTRPCClient<AppRouter>({
 	links: [
 		httpBatchLink({
-			url: `${process.env.VITE_SERVER_URL}/trpc`,
+			url: `${import.meta.env.VITE_SERVER_URL}/trpc`,
 			// url: 'https://docker.api.wsys.au/trpc',
 			fetch(url, options) {
 				return fetch(url, {

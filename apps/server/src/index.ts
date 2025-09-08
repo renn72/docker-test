@@ -9,16 +9,12 @@ import { appRouter } from "./routers/index";
 
 const app = new Hono();
 
-console.log('hi');
+console.log("hi");
 
 app.use(logger());
 
-app.get("/test", (c) => {
-	return c.text("OK");
-});
-
 app.use(
-	"/*",
+	"/api/*",
 	cors({
 		origin: process.env.CORS_ORIGIN || "",
 		allowMethods: [],
@@ -26,8 +22,15 @@ app.use(
 		credentials: true,
 	}),
 );
-
-console.log(process.env.CORS_ORIGIN);
+app.use(
+	"/trpc/*",
+	cors({
+		origin: process.env.CORS_ORIGIN || "",
+		allowMethods: [],
+		allowHeaders: ["Content-Type", "Authorization"],
+		credentials: true,
+	}),
+);
 
 app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
 
@@ -41,5 +44,8 @@ app.use(
 	}),
 );
 
+app.get("/test", (c) => {
+	return c.text("OK");
+});
 
 export default app;
