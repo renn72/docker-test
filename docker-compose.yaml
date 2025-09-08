@@ -10,6 +10,8 @@ services:
       - SECRET=${BETTER_AUTH_SECRET}
       - BETTER_AUTH_URL=${BETTER_AUTH_URL}
       - DATABASE_URL=file:${DATABASE_URL}
+    ports:
+      - 80:80
 
     volumes:
       - ./db/db-current:/app/db
@@ -21,7 +23,7 @@ services:
       context: .
       dockerfile: apps/web/Dockerfile
     environment:
-      - VITE_SERVER_URL=https://docker.api.wsys.au
+      - VITE_SERVER_URL=${VITE_SERVER_URL}
     depends_on:
       - backend
     restart: unless-stopped
