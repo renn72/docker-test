@@ -25,7 +25,7 @@ app.use(
 app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
 
 app.use(
-	"/api/trpc/*",
+	"/trpc/*",
 	trpcServer({
 		router: appRouter,
 		createContext: (_opts, context) => {
@@ -34,7 +34,7 @@ app.use(
 	}),
 );
 
-app.get("/api/test", (c) => {
+app.get("/test", (c) => {
 	return c.text("OK");
 });
 
