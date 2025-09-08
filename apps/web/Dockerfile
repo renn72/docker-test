@@ -17,8 +17,7 @@ apt-get clean && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - &&\
 apt-get update && apt-get install -y nodejs && npm install -g npm@latest &&\
 npm install -g pnpm && pnpm install --frozen-lockfile
 
-ARG VITE_SERVER_URL
-ENV VITE_SERVER_URL=$VITE_SERVER_URL
+RUN env
 
 # Build the web application using Turborepo.
 RUN bunx turbo run build --filter=web

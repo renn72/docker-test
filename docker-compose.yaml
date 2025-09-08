@@ -11,6 +11,9 @@ services:
       - BETTER_AUTH_URL=${BETTER_AUTH_URL}
       - DATABASE_URL=file:${DATABASE_URL}
 
+    ports:
+      - "3000"
+
     volumes:
       - ./db/db-current:/app/db
 
