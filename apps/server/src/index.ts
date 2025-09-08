@@ -12,6 +12,11 @@ const app = new Hono();
 console.log('hi');
 
 app.use(logger());
+
+app.get("/test", (c) => {
+	return c.text("OK");
+});
+
 app.use(
 	"/*",
 	cors({
@@ -21,6 +26,8 @@ app.use(
 		credentials: true,
 	}),
 );
+
+console.log(process.env.CORS_ORIGIN);
 
 app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
 
@@ -34,8 +41,5 @@ app.use(
 	}),
 );
 
-app.get("/test", (c) => {
-	return c.text("OK");
-});
 
 export default app;

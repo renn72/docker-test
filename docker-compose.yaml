@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: apps/server/Dockerfile
     environment:
-      - CORS_ORIGIN=${VITE_SERVER_URL}
+      - CORS_ORIGIN=${CORS_ORIGIN}
       - SECRET=${BETTER_AUTH_SECRET}
       - BETTER_AUTH_URL=${BETTER_AUTH_URL}
       - DATABASE_URL=file:${DATABASE_URL}
