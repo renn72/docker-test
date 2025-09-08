@@ -9,12 +9,14 @@ import { appRouter } from "./routers/index";
 
 const app = new Hono();
 
+console.log('hi');
+
 app.use(logger());
 app.use(
 	"/*",
 	cors({
 		origin: process.env.CORS_ORIGIN || "",
-		allowMethods: ["GET", "POST", "OPTIONS"],
+		allowMethods: [],
 		allowHeaders: ["Content-Type", "Authorization"],
 		credentials: true,
 	}),

@@ -1,5 +1,7 @@
 import { protectedProcedure, publicProcedure, router } from "../lib/trpc";
 
+console.log('trpc router');
+
 export const appRouter = router({
 	healthCheck: publicProcedure.query(() => {
 		return "OK";
