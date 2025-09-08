@@ -13,24 +13,24 @@ console.log("hi");
 
 app.use(logger());
 
-// app.use(
-// 	"/api/*",
-// 	cors({
-// 		origin: process.env.CORS_ORIGIN || "",
-// 		allowMethods: [],
-// 		allowHeaders: ["Content-Type", "Authorization"],
-// 		credentials: true,
-// 	}),
-// );
-// app.use(
-// 	"/trpc/*",
-// 	cors({
-// 		origin: process.env.CORS_ORIGIN || "",
-// 		allowMethods: [],
-// 		allowHeaders: ["Content-Type", "Authorization"],
-// 		credentials: true,
-// 	}),
-// );
+app.use(
+	"/api/*",
+	cors({
+		origin: process.env.CORS_ORIGIN || "",
+		allowMethods: [],
+		allowHeaders: ["Content-Type", "Authorization"],
+		credentials: true,
+	}),
+);
+app.use(
+	"/trpc/*",
+	cors({
+		origin: process.env.CORS_ORIGIN || "",
+		allowMethods: [],
+		allowHeaders: ["Content-Type", "Authorization"],
+		credentials: true,
+	}),
+);
 
 app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
 
