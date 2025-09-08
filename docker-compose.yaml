@@ -21,7 +21,7 @@ services:
       context: .
       dockerfile: apps/web/Dockerfile
     environment:
-      - VITE_SERVER_URL=${VITE_SERVER_URL}
+      - VITE_SERVER_URL=https://docker.api.wsys.au
     depends_on:
       - backend
     restart: unless-stopped
