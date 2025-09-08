@@ -12,7 +12,7 @@ services:
       - DATABASE_URL=file:./db/local.db
 
     volumes:
-      - ./db-data:/app/apps/server/db
+      - ./root/db-data:/app/db
 
     ports:
       - "3001:3001"
