@@ -47,7 +47,7 @@ RUN pnpm install --prod
 RUN mkdir -p /app/db
 
 # Expose the server's port.
-EXPOSE 3001
+EXPOSE 80
 
 # Set the command to run the Hono server.
 CMD ["bun", "run", "dist/index.js"]

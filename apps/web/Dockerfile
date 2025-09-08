@@ -17,6 +17,8 @@ apt-get clean && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - &&\
 apt-get update && apt-get install -y nodejs && npm install -g npm@latest &&\
 npm install -g pnpm && pnpm install --frozen-lockfile
 
+ARG VITE_SERVER_URL
+ENV VITE_SERVER_URL=$VITE_SERVER_URL
 
 # Build the web application using Turborepo.
 RUN bunx turbo run build --filter=web
@@ -29,7 +31,7 @@ FROM nginx:alpine
 COPY --from=builder /app/apps/web/dist /usr/share/nginx/html
 
 # Expose the frontend's port.
-EXPOSE 3000
+EXPOSE 80
 
 # The NGINX server will automatically start and serve the files.
 CMD ["nginx", "-g", "daemon off;"]
