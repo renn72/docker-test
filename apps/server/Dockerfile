@@ -1,12 +1,25 @@
 # Stage 1: Build stage
 FROM oven/bun:1.2-debian AS builder
 
+ARG CORS_ORIGIN
+ARG BETTER_AUTH_SECRET
+ARG BETTER_AUTH_URL
+ARG DATABASE_URL
+ENV CORS_ORIGIN=${CORS_ORIGIN}
+ENV BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
+ENV BETTER_AUTH_URL=${BETTER_AUTH_URL}
+ENV DATABASE_URL=${DATABASE_URL}
+
 # Set the working directory
 WORKDIR /app
 
 # Copy package.json and bun.lockb to leverage Docker layer caching
 # Using bun.lockb* to handle potential variations
 COPY package.json bun.lockb* ./
+
+RUN apt-get update && apt-get install -y curl &&\
+apt-get clean && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - &&\
+apt-get update && apt-get install -y nodejs && npm install -g npm@latest
 
 # Install dependencies using the lockfile for reproducibility
 RUN bun install
@@ -34,14 +47,6 @@ COPY --from=builder /app/dist ./dist
 
 # Copy the example environment file.
 # In production, you should provide an actual .env file or set environment variables.
-ARG CORS_ORIGIN
-ARG BETTER_AUTH_SECRET
-ARG BETTER_AUTH_URL
-ARG DATABASE_URL
-ENV CORS_ORIGIN=${CORS_ORIGIN}
-ENV BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
-ENV BETTER_AUTH_URL=${BETTER_AUTH_URL}
-ENV DATABASE_URL=${DATABASE_URL}
 
 # Create a directory for the database. This is useful if you're using a file-based database like SQLite.
 RUN mkdir -p db
