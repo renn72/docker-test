@@ -28,10 +28,10 @@ FROM oven/bun:1.1.18-slim
 WORKDIR /app
 
 # Copy only the necessary server build artifacts from the builder stage.
-COPY --from=builder /app/apps/server/dist ./dist
+COPY --from=builder /server/dist ./dist
 
 # Copy the server's package.json to install only production dependencies.
-COPY --from=builder /app/apps/server/package.json ./package.json
+COPY --from=builder /server/package.json ./package.json
 
 # Install pnpm
 RUN apt-get update && apt-get install -y curl &&\
