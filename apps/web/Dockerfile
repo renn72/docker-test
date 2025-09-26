@@ -13,7 +13,7 @@ WORKDIR /app
 RUN npm install -g pnpm
 
 # Copy dependency definition files
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml* ./
 
 # Install dependencies
 RUN pnpm install
