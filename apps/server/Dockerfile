@@ -1,53 +1,53 @@
-# Stage 1: Build the server
-# We use a bun base image for the build process.
-FROM oven/bun:1.1.18-slim AS builder
+# Stage 1: Build stage
+FROM oven/bun:1.2-debian AS builder
 
 # Set the working directory
 WORKDIR /app
 
-# Copy package management files to leverage Docker's cache.
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+# Copy package.json and bun.lockb to leverage Docker layer caching
+# Using bun.lockb* to handle potential variations
+COPY package.json bun.lockb* ./
 
-# Copy the entire monorepo source.
+# Install dependencies using the lockfile for reproducibility
+RUN bun install
+
+# Copy the rest of the application source code
 COPY . .
 
-# Install Curl
-RUN apt-get update && apt-get install -y curl &&\
-apt-get clean && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - &&\
-apt-get update && apt-get install -y nodejs && npm install -g npm@latest &&\
-npm install -g pnpm && pnpm install --frozen-lockfile
+# Build the application
+RUN bun run build
 
-# Build the server application using Turborepo.
-RUN bunx turbo run build --filter=server
+# Stage 2: Production stage
+FROM oven/bun:1.2-debian
 
-# Stage 2: Final production image
-# Use a minimal Bun image for a lean final image.
-FROM oven/bun:1.1.18-slim
-
-# Set the working directory.
+# Set the working directory
 WORKDIR /app
 
-# Copy only the necessary server build artifacts from the builder stage.
-COPY --from=builder /server/dist ./dist
+# Copy dependency manifests from the builder
+COPY --from=builder /app/package.json ./
 
-# Copy the server's package.json to install only production dependencies.
-COPY --from=builder /server/package.json ./package.json
+# Install only production dependencies
+RUN bun install --production
 
-# Install pnpm
-RUN apt-get update && apt-get install -y curl &&\
-apt-get clean && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - &&\
-apt-get update && apt-get install -y nodejs && npm install -g npm@latest &&\
-npm install -g pnpm
+# Copy the built application from the builder stage
+COPY --from=builder /app/dist ./dist
 
-# Install production dependencies for the server.
-RUN pnpm install --prod
+# Copy the example environment file.
+# In production, you should provide an actual .env file or set environment variables.
+ARG CORS_ORIGIN
+ARG BETTER_AUTH_SECRET
+ARG BETTER_AUTH_URL
+ARG DATABASE_URL
+ENV CORS_ORIGIN=${CORS_ORIGIN}
+ENV BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
+ENV BETTER_AUTH_URL=${BETTER_AUTH_URL}
+ENV DATABASE_URL=${DATABASE_URL}
 
-# Create the directory for the SQLite database.
-# This ensures the directory exists before the volume is mounted.
-RUN mkdir -p /app/db
+# Create a directory for the database. This is useful if you're using a file-based database like SQLite.
+RUN mkdir -p db
 
-# Expose the server's port.
-EXPOSE 80
+# Expose the port the application will run on (Hono's default with Bun is 3000)
+EXPOSE 3000
 
-# Set the command to run the Hono server.
+# The command to run the application
 CMD ["bun", "run", "dist/index.js"]
