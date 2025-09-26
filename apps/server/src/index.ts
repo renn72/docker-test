@@ -11,6 +11,8 @@ const app = new Hono();
 
 console.log("hi");
 
+console.log(process.env.CORS_ORIGIN);
+
 app.use(logger());
 
 app.use(
@@ -18,7 +20,6 @@ app.use(
 	cors(
     {
 		origin: process.env.CORS_ORIGIN || "",
-		allowMethods: [],
 		allowHeaders: ["Content-Type", "Authorization"],
 		credentials: true,
 	}
