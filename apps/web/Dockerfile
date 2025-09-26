@@ -8,10 +8,10 @@ ARG VITE_SERVER_URL
 ENV VITE_SERVER_URL=${VITE_SERVER_URL}
 
 # Set the working directory.
-WORKDIR /app
+WORKDIR /
 
 # Copy package management files to leverage Docker's cache.
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+# COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Copy the entire monorepo source.
 COPY . .
