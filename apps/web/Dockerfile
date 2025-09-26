@@ -32,7 +32,7 @@ RUN bunx turbo run build --filter=web
 FROM nginx:alpine
 
 # Copy the built frontend files from the builder stage to NGINX's public directory.
-COPY --from=builder /app/apps/web/dist /usr/share/nginx/html
+COPY --from=builder /dist /usr/share/nginx/html
 
 # Expose the frontend's port.
 EXPOSE 80
