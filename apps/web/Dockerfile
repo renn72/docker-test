@@ -1,41 +1,40 @@
-# Stage 1: Build the frontend
-# We use a bun base image for the build process.
-FROM oven/bun:1.1.18-slim AS builder
+# Stage 1: Build the application
+FROM node:20-alpine AS builder
 
 # Accept the VITE_SERVER_URL build argument
 ARG VITE_SERVER_URL
 # Set it as an environment variable for the build
 ENV VITE_SERVER_URL=${VITE_SERVER_URL}
 
-# Set the working directory.
-WORKDIR /
+# Set working directory
+WORKDIR /app
 
-# Copy package management files to leverage Docker's cache.
-# COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+# Install pnpm
+RUN npm install -g pnpm
 
-# Copy the entire monorepo source.
+# Copy dependency definition files
+COPY package.json pnpm-lock.yaml ./
+
+# Install dependencies
+RUN pnpm install
+
+# Copy the rest of the application source code
 COPY . .
 
-# Install Curl
-RUN apt-get update && apt-get install -y curl &&\
-apt-get clean && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - &&\
-apt-get update && apt-get install -y nodejs && npm install -g npm@latest &&\
-npm install -g pnpm && pnpm install
+# Build the application
+RUN pnpm run build
 
-RUN env
+# Stage 2: Serve the application with Nginx
+FROM nginx:stable-alpine
 
-# Build the web application using Turborepo.
-RUN pnpm build
+# Copy the built assets from the builder stage
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Stage 2: Final production image
-# Use a simple NGINX image to serve the static frontend files.
-FROM nginx:alpine
+# Copy the nginx configuration
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy the built frontend files from the builder stage to NGINX's public directory.
-COPY --from=builder /dist /usr/share/nginx/html
-
-# Expose the frontend's port.
+# Expose port 80
 EXPOSE 80
 
-# The NGINX server will automatically start and serve the files.
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
