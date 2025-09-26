@@ -25,7 +25,7 @@ npm install -g pnpm && pnpm install
 RUN env
 
 # Build the web application using Turborepo.
-RUN bunx vite build
+RUN pnpm build
 
 # Stage 2: Final production image
 # Use a simple NGINX image to serve the static frontend files.
