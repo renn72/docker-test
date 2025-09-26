@@ -1,5 +1,5 @@
 # Stage 1: Build stage
-FROM oven/bun:1.2-debian AS builder
+FROM oven/bun:1.22-debian AS builder
 
 ARG CORS_ORIGIN
 ARG BETTER_AUTH_SECRET
@@ -19,8 +19,7 @@ COPY package.json bun.lockb* ./
 
 RUN apt-get update && apt-get install -y curl &&\
 apt-get clean && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - &&\
-apt-get update && apt-get install -y nodejs && npm install -g npm@latest
-
+apt-get update && apt-get install -y nodejs && npm install -g npm@latest &&\
 # Install dependencies using the lockfile for reproducibility
 RUN bun install
 
