@@ -15,16 +15,23 @@ console.log(process.env.CORS_ORIGIN);
 
 app.use(logger());
 
-app.use(
-	"*",
-	cors(
-    {
-		origin: process.env.CORS_ORIGIN || "",
-		allowHeaders: ["Content-Type", "Authorization"],
-		credentials: true,
-	}
-  ),
-);
+app.use('*', async (c, next) => {
+  const corsMiddlewareHandler = cors({
+    origin: process.env.CORS_ORIGIN || "",
+  })
+  return corsMiddlewareHandler(c, next)
+})
+
+// app.use(
+// 	"*",
+// 	cors(
+//     {
+// 		origin: process.env.CORS_ORIGIN || "",
+// 		allowHeaders: ["Content-Type", "Authorization"],
+// 		credentials: true,
+// 	}
+//   ),
+// );
 
 app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
 
