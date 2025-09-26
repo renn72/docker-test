@@ -20,7 +20,7 @@ COPY . .
 RUN apt-get update && apt-get install -y curl &&\
 apt-get clean && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - &&\
 apt-get update && apt-get install -y nodejs && npm install -g npm@latest &&\
-npm install -g pnpm && pnpm install --frozen-lockfile
+npm install -g pnpm && pnpm install
 
 RUN env
 
