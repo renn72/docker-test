@@ -29,7 +29,7 @@ RUN bun run build
 # Stage 2: Production stage
 FROM oven/bun:1.2-debian
 
-RUN apt-get update && apt-get install -y curl
+RUN apt-get update && apt-get install -y curl wget
 
 # Set the working directory
 WORKDIR /app
