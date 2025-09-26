@@ -13,17 +13,17 @@ console.log("hi");
 
 app.use(logger());
 
-app.use(
-	"*",
-	cors(
- //    {
-	// 	origin: process.env.CORS_ORIGIN || "",
-	// 	allowMethods: [],
-	// 	allowHeaders: ["Content-Type", "Authorization"],
-	// 	credentials: true,
-	// }
-  ),
-);
+// app.use(
+// 	"*",
+// 	cors(
+//  //    {
+// 	// 	origin: process.env.CORS_ORIGIN || "",
+// 	// 	allowMethods: [],
+// 	// 	allowHeaders: ["Content-Type", "Authorization"],
+// 	// 	credentials: true,
+// 	// }
+//   ),
+// );
 
 app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
 

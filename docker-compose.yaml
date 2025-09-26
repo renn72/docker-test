@@ -10,8 +10,6 @@ services:
       - SECRET=${BETTER_AUTH_SECRET}
       - BETTER_AUTH_URL=${BETTER_AUTH_URL}
       - DATABASE_URL=file:${DATABASE_URL}
-    ports:
-      - "3001:3001"
     volumes:
       - ./db/db-current:/app/db
     restart: unless-stopped
@@ -22,8 +20,6 @@ services:
       dockerfile: apps/web/Dockerfile
       args:
         - VITE_SERVER_URL=${VITE_SERVER_URL}
-    ports:
-      - "3000:80"
     depends_on:
       - backend
     restart: unless-stopped

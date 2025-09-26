@@ -4,6 +4,7 @@ console.log('trpc router');
 
 export const appRouter = router({
 	healthCheck: publicProcedure.query(() => {
+    console.log('health check');
 		return "OK";
 	}),
 	privateData: protectedProcedure.query(({ ctx }) => {
